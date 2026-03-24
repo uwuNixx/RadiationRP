@@ -1,0 +1,18 @@
+name: RadiationRP
+main: me.uwunixx.radiationrp.RadiationRP
+version: 1.0.0
+author: uwuNixx
+api-version: 1.21
+commands:
+  rad:
+    description: Main radiation command
+    usage: /rad <x> <y> <z> <radius> <power>
+  radpower:
+    description: Set radiation power
+    usage: /radpower <power>
+  radgivefilter:
+    description: Give radiation filter
+    usage: /radgivefilter <level>
+  radgivesuit:
+    description: Give radiation suit
+    usage: /radgivesuit <level>
