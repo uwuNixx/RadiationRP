@@ -25,7 +25,7 @@ public class InventoryOpenListener implements Listener {
 
         if (filterManager.isFilter(block)) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("Это фильтр, а не печь.");
+            event.getPlayer().sendMessage("§eЭто фильтр, а не печь.");
         }
     }
 }

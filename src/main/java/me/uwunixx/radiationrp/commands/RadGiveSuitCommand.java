@@ -44,13 +44,13 @@ public class RadGiveSuitCommand implements CommandExecutor {
             return true;
         }
 
-        ItemStack suit = suitManager.createSuit(level);
-        if (suit == null) {
-            player.sendMessage("Костюм ещё не реализован.");
-            return true;
+        // 🔥 ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
+        ItemStack[] suit = suitManager.createSuit(level);
+
+        for (ItemStack piece : suit) {
+            player.getInventory().addItem(piece);
         }
 
-        player.getInventory().addItem(suit);
         player.sendMessage("Выдан костюм уровня " + levelInt + ".");
         return true;
     }

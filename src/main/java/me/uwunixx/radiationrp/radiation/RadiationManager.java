@@ -12,8 +12,6 @@ public class RadiationManager {
     private final Map<Integer, RadiationZone> zones = new HashMap<>();
     private int nextId = 1;
 
-    private BukkitTask spreadTask;
-    private BukkitTask growthTask;
     private BukkitTask damageTask;
 
     public RadiationManager(RadiationRP plugin) {
@@ -30,13 +28,33 @@ public class RadiationManager {
         return zones.values();
     }
 
+    /**
+     * Возвращает уровень радиации в точке.
+     * Пока что — просто проверка расстояния до зон.
+     */
+    public int getRadiationAt(Location loc) {
+        int max = 0;
+
+        for (RadiationZone zone : zones.values()) {
+            if (!zone.getCenter().getWorld().equals(loc.getWorld())) continue;
+
+            double dist = loc.distance(zone.getCenter());
+            if (dist <= zone.getMaxRadius()) {
+                max = Math.max(max, zone.getPower());
+            }
+        }
+
+        return max;
+    }
+
     public void startTasks() {
-        // TODO: запустить spread, growth, damage
+        // Урон от радиации — каждые 20 тиков (1 секунда)
+        damageTask = new RadiationDamageTask(plugin).runTaskTimer(plugin, 20, 20);
+
+        // Spread и Growth добавим позже
     }
 
     public void stopTasks() {
-        if (spreadTask != null) spreadTask.cancel();
-        if (growthTask != null) growthTask.cancel();
         if (damageTask != null) damageTask.cancel();
     }
 }

@@ -26,7 +26,7 @@ public class BlockPlaceListener implements Listener {
         FilterBlock filter = new FilterBlock(
                 event.getBlockPlaced().getLocation(),
                 level,
-                6 // радиус фильтра — потом можно вынести в конфиг
+                6 // радиус фильтра — позже вынесем в конфиг
         );
 
         filterManager.addFilter(filter);
