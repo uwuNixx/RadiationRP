@@ -15,17 +15,20 @@ public class RadiationDamageTask extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        int multiplier = plugin.getConfig().getInt("damage-multiplier", 3);
+
         for (Player player : Bukkit.getOnlinePlayers()) {
 
-            int rad = plugin.getRadiationManager().getRadiationAt(player.getLocation());
+            int rad = plugin.getRadiationManager().getRadiationAround(player.getLocation());
             if (rad <= 0) continue;
 
             int suit = plugin.getSuitManager().getPlayerSuitLevel(player);
 
-            int damage = Math.max(0, rad - suit * 2);
+            int damage = Math.max(0, (rad - suit) * multiplier);
 
             if (damage > 0) {
-                player.damage(damage * 0.5); // можно настроить
+                player.damage(damage);
                 player.sendActionBar("§cРадиация: §f" + rad + " §7(защита: " + suit + ")");
             }
         }

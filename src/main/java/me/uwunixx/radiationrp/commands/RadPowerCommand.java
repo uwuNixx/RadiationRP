@@ -15,25 +15,26 @@ public class RadPowerCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1) {
-            sender.sendMessage("Использование: /radpower <power>");
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+        if (args.length < 2) {
+            sender.sendMessage("§cИспользование: /radpower <id зоны> <новая сила>");
             return true;
         }
 
-        int power;
-        try {
-            power = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage("Неверное значение.");
+        int id = Integer.parseInt(args[0]);
+        int power = Integer.parseInt(args[1]);
+
+        RadiationZone zone = plugin.getRadiationManager().getZone(id);
+
+        if (zone == null) {
+            sender.sendMessage("§cЗона не найдена.");
             return true;
         }
 
-        for (RadiationZone zone : plugin.getRadiationManager().getZones()) {
-            zone.setPower(power);
-        }
+        zone.setPower(power);
+        sender.sendMessage("§aСила зоны изменена на " + power);
 
-        sender.sendMessage("Сила радиации обновлена.");
         return true;
     }
 }

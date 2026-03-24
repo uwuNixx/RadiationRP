@@ -28,7 +28,6 @@ public class SuitManager {
         };
     }
 
-    // 🔥 Вот этот метод тебе и нужен
     public ItemStack[] createSuit(SuitLevel level) {
         return createFullSuit(level.getLevel());
     }

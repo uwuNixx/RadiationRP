@@ -2,56 +2,41 @@ package me.uwunixx.radiationrp.commands;
 
 import me.uwunixx.radiationrp.RadiationRP;
 import me.uwunixx.radiationrp.suits.SuitLevel;
-import me.uwunixx.radiationrp.suits.SuitManager;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class RadGiveSuitCommand implements CommandExecutor {
 
-    private final SuitManager suitManager;
+    private final RadiationRP plugin;
 
     public RadGiveSuitCommand(RadiationRP plugin) {
-        this.suitManager = plugin.getSuitManager();
+        this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Только игрок может использовать эту команду.");
             return true;
         }
 
-        if (args.length != 1) {
-            player.sendMessage("Использование: /radgivesuit <level>");
+        if (args.length < 1) {
+            player.sendMessage("§cИспользование: /radgivesuit <уровень>");
             return true;
         }
 
-        int levelInt;
-        try {
-            levelInt = Integer.parseInt(args[0]);
-        } catch (Exception e) {
-            player.sendMessage("Уровень должен быть числом.");
-            return true;
-        }
+        int lvl = Integer.parseInt(args[0]);
+        SuitLevel level = SuitLevel.fromInt(lvl);
 
-        SuitLevel level = SuitLevel.fromInt(levelInt);
         if (level == null) {
-            player.sendMessage("Уровень должен быть от 1 до 5.");
+            player.sendMessage("§cНеверный уровень.");
             return true;
         }
 
-        // 🔥 ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ
-        ItemStack[] suit = suitManager.createSuit(level);
+        player.getInventory().addItem(plugin.getSuitManager().createSuit(level));
+        player.sendMessage("§aВыдан костюм уровня " + lvl);
 
-        for (ItemStack piece : suit) {
-            player.getInventory().addItem(piece);
-        }
-
-        player.sendMessage("Выдан костюм уровня " + levelInt + ".");
         return true;
     }
 }

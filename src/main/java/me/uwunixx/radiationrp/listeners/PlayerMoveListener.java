@@ -18,13 +18,12 @@ public class PlayerMoveListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-
         Player player = event.getPlayer();
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!NBTUtils.isGeiger(item)) return;
 
-        int rad = plugin.getRadiationManager().getRadiationAt(player.getLocation());
+        int rad = plugin.getRadiationManager().getRadiationAround(player.getLocation());
 
         if (rad > 0) {
             player.sendActionBar("§e☢ Уровень радиации: §c" + rad);

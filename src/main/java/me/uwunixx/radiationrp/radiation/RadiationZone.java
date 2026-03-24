@@ -1,8 +1,6 @@
 package me.uwunixx.radiationrp.radiation;
 
 import org.bukkit.Location;
-import java.util.HashSet;
-import java.util.Set;
 
 public class RadiationZone {
 
@@ -10,8 +8,6 @@ public class RadiationZone {
     private final Location center;
     private final double maxRadius;
     private int power;
-
-    private final Set<RadiationBlock> blocks = new HashSet<>();
 
     public RadiationZone(int id, Location center, double maxRadius, int power) {
         this.id = id;
@@ -38,9 +34,5 @@ public class RadiationZone {
 
     public void setPower(int power) {
         this.power = power;
-    }
-
-    public Set<RadiationBlock> getBlocks() {
-        return blocks;
     }
 }

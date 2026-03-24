@@ -18,8 +18,8 @@ public enum SuitLevel {
     }
 
     public static SuitLevel fromInt(int i) {
-        for (SuitLevel s : values()) {
-            if (s.level == i) return s;
+        for (SuitLevel lvl : values()) {
+            if (lvl.level == i) return lvl;
         }
         return null;
     }

@@ -16,3 +16,7 @@ commands:
   radgivesuit:
     description: Give radiation suit
     usage: /radgivesuit <level>
+  radremove:
+    description: Remove radiation zone
+    usage: /radremove <id|all>
+

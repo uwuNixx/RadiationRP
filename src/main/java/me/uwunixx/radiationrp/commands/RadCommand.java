@@ -16,32 +16,26 @@ public class RadCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
         if (!(sender instanceof Player player)) {
             sender.sendMessage("Только игрок может использовать эту команду.");
             return true;
         }
 
-        if (args.length != 5) {
-            sender.sendMessage("Использование: /rad <x> <y> <z> <radius> <power>");
+        if (args.length < 2) {
+            player.sendMessage("§cИспользование: /rad <радиус> <сила>");
             return true;
         }
 
-        try {
-            double x = Double.parseDouble(args[0]);
-            double y = Double.parseDouble(args[1]);
-            double z = Double.parseDouble(args[2]);
-            double radius = Double.parseDouble(args[3]);
-            int power = Integer.parseInt(args[4]);
+        double radius = Double.parseDouble(args[0]);
+        int power = Integer.parseInt(args[1]);
 
-            Location center = new Location(player.getWorld(), x, y, z);
-            plugin.getRadiationManager().createZone(center, radius, power);
+        Location loc = player.getLocation();
 
-            sender.sendMessage("Создана зона радиации.");
-        } catch (Exception e) {
-            sender.sendMessage("Неверные аргументы.");
-        }
+        plugin.getRadiationManager().createZone(loc, radius, power);
 
+        player.sendMessage("§aСоздана зона радиации! Радиус: " + radius + ", сила: " + power);
         return true;
     }
 }

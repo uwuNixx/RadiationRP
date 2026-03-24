@@ -7,6 +7,7 @@ import me.uwunixx.radiationrp.radiation.RadiationManager;
 import me.uwunixx.radiationrp.suits.SuitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class RadiationRP extends JavaPlugin {
         registerCommand("radpower", new RadPowerCommand(this));
         registerCommand("radgivefilter", new RadGiveFilterCommand(this));
         registerCommand("radgivesuit", new RadGiveSuitCommand(this));
+        registerCommand("radremove", new RadRemoveCommand(this));
 
         // --- РЕГИСТРАЦИЯ СОБЫТИЙ ---
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(this), this);
@@ -41,24 +43,33 @@ public class RadiationRP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryOpenListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(this), this);
 
-        radiationManager.startTasks();
+        radiationManager.loadData();
+
+        getLogger().info("Before filter tasks");
         filterManager.startTasks();
+        getLogger().info("After filter tasks");
+
+        getLogger().info("Before radiation tasks");
+        radiationManager.startTasks();
+        getLogger().info("After radiation tasks");
+
 
         getLogger().info("RadiationRP enabled.");
     }
 
     @Override
     public void onDisable() {
+        radiationManager.saveData();
         radiationManager.stopTasks();
         filterManager.stopTasks();
         getLogger().info("RadiationRP disabled.");
     }
 
-    private void registerCommand(String name, Object executor) {
+    private void registerCommand(String name, CommandExecutor executor) {
         PluginCommand cmd = Objects.requireNonNull(getCommand(name),
                 "Команда '" + name + "' не найдена в plugin.yml");
 
-        cmd.setExecutor((org.bukkit.command.CommandExecutor) executor);
+        cmd.setExecutor(executor);
     }
 
     public static RadiationRP getInstance() {

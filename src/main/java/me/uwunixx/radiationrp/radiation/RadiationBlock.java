@@ -5,32 +5,32 @@ import org.bukkit.Location;
 public class RadiationBlock {
 
     private final Location location;
-    private int level; // 1..zone.power
-    private long infectedAt;
+    private final int zoneId;
+    private int power;
 
-    public RadiationBlock(Location location, int level, long infectedAt) {
+    public RadiationBlock(Location location, int zoneId, int power) {
         this.location = location;
-        this.level = level;
-        this.infectedAt = infectedAt;
+        this.zoneId = zoneId;
+        this.power = power;
     }
 
     public Location getLocation() {
         return location;
     }
 
-    public int getLevel() {
-        return level;
+    public int getZoneId() {
+        return zoneId;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public int getPower() {
+        return power;
     }
 
-    public long getInfectedAt() {
-        return infectedAt;
+    public void weaken(int amount) {
+        power = Math.max(0, power - amount);
     }
 
-    public void setInfectedAt(long infectedAt) {
-        this.infectedAt = infectedAt;
+    public void strengthen(int amount) {
+        power += amount;
     }
 }

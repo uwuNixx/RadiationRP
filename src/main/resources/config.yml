@@ -1,0 +1,12 @@
+# Раз в сколько тиков распространяется радиация
+# 20 тиков = 1 секунда
+spread-interval: 80   # раз в 4 секунды
+
+# Множитель урона: damage = max(0, (rad - suit) * damage-multiplier)
+damage-multiplier: 3
+
+# Блоки, через которые радиация НЕ проходит
+blocked-blocks:
+  - IRON_BLOCK
+  - OBSIDIAN
+  - BEDROCK

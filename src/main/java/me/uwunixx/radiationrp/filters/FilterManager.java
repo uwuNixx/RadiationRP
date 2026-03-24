@@ -1,40 +1,70 @@
 package me.uwunixx.radiationrp.filters;
 
 import me.uwunixx.radiationrp.RadiationRP;
+import me.uwunixx.radiationrp.radiation.RadiationBlock;
+import me.uwunixx.radiationrp.radiation.RadiationManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 
 public class FilterManager {
 
     private final RadiationRP plugin;
-    private final Set<FilterBlock> filters = new HashSet<>();
-    private BukkitTask cleanTask;
+    private final Map<Location, FilterBlock> filters = new HashMap<>();
 
     public FilterManager(RadiationRP plugin) {
         this.plugin = plugin;
     }
 
     public void addFilter(FilterBlock filter) {
-        filters.add(filter);
+        filters.put(filter.getLocation(), filter);
     }
 
     public void removeFilter(Block block) {
-        filters.removeIf(f -> f.getLocation().equals(block.getLocation()));
+        filters.remove(block.getLocation());
     }
 
     public boolean isFilter(Block block) {
-        return filters.stream().anyMatch(f -> f.getLocation().equals(block.getLocation()));
+        return filters.containsKey(block.getLocation());
+    }
+
+    public boolean isNearFilter(Location loc, int radius) {
+        for (FilterBlock filter : filters.values()) {
+            if (filter.getLocation().getWorld().equals(loc.getWorld()) &&
+                    filter.getLocation().distance(loc) <= radius) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void cleanRadiation(RadiationManager rad) {
+        for (RadiationBlock block : new ArrayList<>(rad.getInfected())) {
+            for (FilterBlock filter : filters.values()) {
+                if (block.getLocation().distance(filter.getLocation()) <= filter.getRadius()) {
+                    block.weaken(2);
+                    if (block.getPower() <= 0) {
+                        rad.getInfected().remove(block.getLocation());
+                    }
+                }
+            }
+        }
     }
 
     public void startTasks() {
-        // TODO: периодическая очистка заражённых блоков
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                cleanRadiation(plugin.getRadiationManager());
+            }
+        }.runTaskTimer(plugin, 40, 40);
     }
 
     public void stopTasks() {
-        if (cleanTask != null) cleanTask.cancel();
+        // Пока пусто
     }
 }
