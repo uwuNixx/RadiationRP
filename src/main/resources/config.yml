@@ -5,6 +5,10 @@ spread-interval: 80   # раз в 4 секунды
 # Множитель урона: damage = max(0, (rad - suit) * damage-multiplier)
 damage-multiplier: 3
 
+# Дальность видимости эффектов радиации (в блоках)
+# Эффекты будут видны, если игрок находится на этом расстоянии от зараженного блока
+radiation-effect-range: 6
+
 # Блоки, через которые радиация НЕ проходит
 blocked-blocks:
   - IRON_BLOCK
