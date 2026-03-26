@@ -7,11 +7,13 @@ public class RadiationBlock {
     private final Location location;
     private final int zoneId;
     private int power;
+    private final boolean core;
 
-    public RadiationBlock(Location location, int zoneId, int power) {
+    public RadiationBlock(Location location, int zoneId, int power, boolean core) {
         this.location = location;
         this.zoneId = zoneId;
         this.power = power;
+        this.core = core;
     }
 
     public Location getLocation() {
@@ -24,6 +26,10 @@ public class RadiationBlock {
 
     public int getPower() {
         return power;
+    }
+
+    public boolean isCore() {
+        return core;
     }
 
     public void weaken(int amount) {

@@ -17,7 +17,9 @@ public class BlockBreakListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
 
-        if (e.getBlock().getType() == Material.BEACON) {
+        if (e.getBlock().getType() != Material.FURNACE) return;
+
+        if (plugin.getFilterManager().isFilter(e.getBlock())) {
             plugin.getFilterManager().removeFilter(e.getBlock());
             e.getPlayer().sendMessage("§cФильтр удалён.");
         }

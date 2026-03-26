@@ -1,7 +1,7 @@
 package me.uwunixx.radiationrp.commands;
 
 import me.uwunixx.radiationrp.RadiationRP;
-import me.uwunixx.radiationrp.filters.FilterBlock;
+import me.uwunixx.radiationrp.items.NBTUtils;
 import org.bukkit.Material;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -23,7 +23,8 @@ public class RadGiveFilterCommand implements CommandExecutor {
             return true;
         }
 
-        ItemStack filter = new ItemStack(Material.BEACON);
+        ItemStack filter = new ItemStack(Material.FURNACE);
+        NBTUtils.setFilterLevel(filter, 1); // помечаем как фильтр уровня 1
         player.getInventory().addItem(filter);
 
         player.sendMessage("§aВыдан фильтр.");

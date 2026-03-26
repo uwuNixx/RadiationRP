@@ -44,11 +44,16 @@ public class FilterManager {
 
     public void cleanRadiation(RadiationManager rad) {
         for (RadiationBlock block : new ArrayList<>(rad.getInfected())) {
+            // ядро зоны фильтрами не трогаем
+            if (block.isCore()) continue;
+
             for (FilterBlock filter : filters.values()) {
+                if (!filter.getLocation().getWorld().equals(block.getLocation().getWorld())) continue;
+
                 if (block.getLocation().distance(filter.getLocation()) <= filter.getRadius()) {
                     block.weaken(2);
                     if (block.getPower() <= 0) {
-                        rad.getInfected().remove(block.getLocation());
+                        rad.removeInfectedAt(block.getLocation());
                     }
                 }
             }
